@@ -23,7 +23,7 @@ provide(APP_THEME_KEY, {
 
 <template>
   <NConfigProvider :locale="zhTW" :date-locale="dateZhTW" :theme="theme">
-    <NMessageProvider>
+    <NMessageProvider >
       <component :is="route.meta.layout || 'div'">
         <RouterView />
       </component>

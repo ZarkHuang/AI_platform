@@ -2,12 +2,12 @@
 </script>
 
 <template>
-  <NLayout position="absolute">
-    <NLayoutHeader bordered style="height: 60px">
+  <NLayout  position="absolute">
+    <NLayoutHeader  position="absolute" style="height: 60px ;">
       <AppHeader />
     </NLayoutHeader>
 
-    <NLayoutContent position="absolute" style="top: 60px; bottom: 32px; padding: 16px">
+    <NLayoutContent position="absolute" style="top: 100px; bottom: 32px; padding: 16px">
       <RouterView />
     </NLayoutContent>
 
@@ -18,15 +18,4 @@
 </template>
 
 <style module lang="scss">
-.layoutHeader {
-  height: 60px;
-}
-
-.layoutContent {
-  top: 60px;
-}
-
-.layoutFooter {
-  height: 36px;
-}
 </style>
