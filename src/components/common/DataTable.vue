@@ -150,7 +150,7 @@ const handleCheck = (rowKeys: DataTableRowKey[]) => {
 
 const filteredData = computed(() => {
   return data.filter((item) => {
-    return item.fileName.includes(props.searchQuery) || item.patientId.includes(props.searchQuery);
+    return item.fileName.includes(props.searchQuery);
   });
 });
 
