@@ -1,5 +1,12 @@
 <template>
   <div>
+  
+    <div style="margin-bottom: 10px; text-align: right;">
+      <NButton ghost type="primary" size="small" @click="addRow">
+       Add New Row
+      </NButton>
+    </div>
+
     <n-data-table
       :columns="columns"
       :data="filteredData"
@@ -16,7 +23,7 @@
 <script setup lang="ts">
 import { defineProps, computed, ref, h } from 'vue';
 import { NDataTable, NButton, NIcon } from 'naive-ui';
-import { Star as StarIcon, StarFilled as StarFilledIcon } from '@vicons/carbon';
+// import { Star as StarIcon, StarFilled as StarFilledIcon } from '@vicons/carbon';
 import { Classification as FolderIcon } from '@vicons/carbon';
 import { DataTableColumns, DataTableRowKey } from 'naive-ui';
 import { format } from 'date-fns';
@@ -39,38 +46,39 @@ const props = defineProps<{
   searchQuery: string;
 }>();
 
-const favorites = ref(new Set<number>());
 
-const handleFavorite = (row: RowData) => {
-  if (favorites.value.has(row.key)) {
-    favorites.value.delete(row.key);
-    console.log(`Removed from favorites: ${row.patientId}`);
-  } else {
-    favorites.value.add(row.key);
-    console.log(`Added to favorites: ${row.patientId}`);
-  }
-};
+// Like 
+// const favorites = ref(new Set<number>());
+// const handleFavorite = (row: RowData) => {
+//   if (favorites.value.has(row.key)) {
+//     favorites.value.delete(row.key);
+//     console.log(`Removed from favorites: ${row.patientId}`);
+//   } else {
+//     favorites.value.add(row.key);
+//     console.log(`Added to favorites: ${row.patientId}`);
+//   }
+// };
 
 const columns: DataTableColumns<RowData> = [
-  {
-    title: '',
-    key: 'none',
-    width: 100,
-  },
-  {
-    title: 'Favorite',
-    key: 'favorite',
-    render(row) {
-      const isFavorite = favorites.value.has(row.key);
-      return h(NIcon, {
-        size: 20,
-        onClick: () => handleFavorite(row),
-        style: { cursor: 'pointer' }
-      }, {
-        default: () => isFavorite ? h(StarFilledIcon) : h(StarIcon)
-      });
-    }
-  },
+  // {
+  //   title: '',
+  //   key: 'none',
+  //   width: 100,
+  // },
+  // {
+  //   title: 'Favorite',
+  //   key: 'favorite',
+  //   render(row) {
+  //     const isFavorite = favorites.value.has(row.key);
+  //     return h(NIcon, {
+  //       size: 20,
+  //       onClick: () => handleFavorite(row),
+  //       style: { cursor: 'pointer' }
+  //     }, {
+  //       default: () => isFavorite ? h(StarFilledIcon) : h(StarIcon)
+  //     });
+  //   }
+  // },
   {
     title: 'File Name',
     key: 'fileName',
@@ -95,17 +103,17 @@ const columns: DataTableColumns<RowData> = [
     title: 'Modality',
     key: 'modality',
     sorter: (a: RowData, b: RowData) => a.modality.localeCompare(b.modality),
-  }, 
+  },
   {
     title: 'Body Part',
     key: 'bodyPart',
     sorter: (a: RowData, b: RowData) => a.bodyPart.localeCompare(b.bodyPart),
   },
-  {
-    title: 'Study Date',
-    key: 'studyDate',
-    sorter: (a: RowData, b: RowData) => new Date(a.studyDate).getTime() - new Date(b.studyDate).getTime(),
-  },
+  // {
+  //   title: 'Study Date',
+  //   key: 'studyDate',
+  //   sorter: (a: RowData, b: RowData) => new Date(a.studyDate).getTime() - new Date(b.studyDate).getTime(),
+  // },
   {
     title: 'All Report',
     key: 'allReport',
@@ -126,7 +134,7 @@ const columns: DataTableColumns<RowData> = [
   }
 ];
 
-const data = Array.from({ length: 46 }).map((_, index) => ({
+const data = ref<RowData[]>(Array.from({ length: 20 }).map((_, index) => ({
   key: index,
   fileName: `File_${index}`,
   patientId: `Demo_${index + 1}`,
@@ -138,7 +146,7 @@ const data = Array.from({ length: 46 }).map((_, index) => ({
   allReport: '',
   app: '',
   favorite: false // 初始化 favorite 狀態
-}));
+})));
 
 const pagination = { pageSize: 10 };
 const rowKey = (row: RowData) => row.patientId;
@@ -150,10 +158,25 @@ const handleCheck = (rowKeys: DataTableRowKey[]) => {
 };
 
 const filteredData = computed(() => {
-  return data.filter((item) => {
-    return item.fileName.includes(props.searchQuery);
+  return data.value.filter((item) => {
+    return item.fileName.includes(props.searchQuery) || item.patientId.includes(props.searchQuery);
   });
 });
 
-// const checkedRowKeys = checkedRowKeysRef;
+const addRow = () => {
+  const newIndex = data.value.length;
+  data.value.push({
+    key: newIndex,
+    fileName: `File_${newIndex}`,
+    patientId: `Demo_${newIndex + 1}`,
+    patientName: `Patient ${newIndex + 1}`,
+    studyDescription: `Description ${newIndex + 1}`,
+    modality: 'CR',
+    bodyPart: ['HAND', 'LSPONE', 'CHEST', 'HIP', 'EYE'][Math.floor(Math.random() * 5)],
+    studyDate: format(new Date(), 'yyyy-MM-dd'),
+    allReport: '',
+    app: '',
+    favorite: false
+  });
+};
 </script>

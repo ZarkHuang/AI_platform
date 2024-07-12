@@ -14,13 +14,13 @@ const { isDarkTheme } = inject(APP_THEME_KEY) as {
 <template>
   <div :class="$style.headerContainer">
     <div :class="$style.logoTitleContainer">
-      <NImage :src="isDarkTheme ? efaiLogoImage : efaiLogoWhiteImage" width="24" preview-disabled />
+      <NImage :src="isDarkTheme ? efaiLogoWhiteImage : efaiLogoImage" width="24" preview-disabled />
       <div :class="$style.headerTitle">AI Marketplace</div>
     </div>
 
     <NSpace align="center" :class="$style.themeTogglerContainer">
-      <n-tag class="mr-48 rounded-full ">For Research Only</n-tag>
-      <AppThemeToggler />
+      <n-tag class="rounded-full ">For Research Only</n-tag>
+      <!-- <AppThemeToggler /> -->
       <!-- <AppLogoutButton /> -->
     </NSpace>
   </div>

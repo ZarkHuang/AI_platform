@@ -8,7 +8,7 @@ const route = useRoute()
 const isDarkTheme = ref(false)
 const theme = computed(() => {
   // 調整畫面顏色
-  return isDarkTheme.value ? undefined : darkTheme
+  return isDarkTheme.value ? darkTheme : undefined
 })
 
 function toggleDarkTheme() {
