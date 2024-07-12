@@ -7,11 +7,11 @@
       <AppHeader />
     </NLayoutHeader>
 
-    <NLayoutContent position="absolute" style="top: 100px; bottom: 32px; padding: 16px">
+    <NLayoutContent position="absolute" style="top: 80px; bottom: 32px; padding: 16px">
       <RouterView />
     </NLayoutContent>
-
-    <NLayoutFooter position="absolute" style="height: 36px">
+    
+    <NLayoutFooter position="absolute" style="height:40px">
       <AppFooter />
     </NLayoutFooter>
   </NLayout>

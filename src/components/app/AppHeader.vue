@@ -19,6 +19,7 @@ const { isDarkTheme } = inject(APP_THEME_KEY) as {
     </div>
 
     <NSpace align="center" :class="$style.themeTogglerContainer">
+      <n-tag class="mr-48 rounded-full ">For Research Only</n-tag>
       <AppThemeToggler />
       <!-- <AppLogoutButton /> -->
     </NSpace>
@@ -48,7 +49,7 @@ const { isDarkTheme } = inject(APP_THEME_KEY) as {
 
 .headerTitle {
   margin-left: 8px;
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 700;
   font-family: 'Outfit', sans-serif;
   letter-spacing: 0.5px;

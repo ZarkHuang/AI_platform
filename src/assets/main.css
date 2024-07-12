@@ -18,9 +18,3 @@ body {
   background-color: transparent !important;
 }
 
-.n-data-table-th{
-  border-width: 0.5px 0.5px 0.5px 0.5px; 
-  border-style: solid solid solid solid;
-  border-color: red red red red;
-  /* margin-bottoms: 20px !important; */
-}

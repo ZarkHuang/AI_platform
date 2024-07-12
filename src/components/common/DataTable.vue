@@ -32,7 +32,7 @@ type RowData = {
   studyDate: string;
   allReport: string;
   app: string;
-  favorite: boolean; // 添加 favorite 狀態
+  favorite: boolean;
 };
 
 const props = defineProps<{
@@ -53,8 +53,9 @@ const handleFavorite = (row: RowData) => {
 
 const columns: DataTableColumns<RowData> = [
   {
-    title: 'None',
+    title: '',
     key: 'none',
+    width: 100,
   },
   {
     title: 'Favorite',
@@ -94,7 +95,7 @@ const columns: DataTableColumns<RowData> = [
     title: 'Modality',
     key: 'modality',
     sorter: (a: RowData, b: RowData) => a.modality.localeCompare(b.modality),
-  },
+  }, 
   {
     title: 'Body Part',
     key: 'bodyPart',
