@@ -1,9 +1,8 @@
 <template>
   <div>
-  
     <div style="margin-bottom: 10px; text-align: right;">
-      <NButton ghost type="primary" size="small" @click="addRow">
-       Add New Row
+      <NButton ghost type="primary" size="small" @click="showUploadModal = true">
+        Add New Row
       </NButton>
     </div>
 
@@ -14,19 +13,19 @@
       :row-key="rowKey"
       @update:checked-row-keys="handleCheck"
     />
-    <!-- <n-p>
-      You have selected {{ checkedRowKeys.length }} row{{ checkedRowKeys.length < 2 ? '' : 's' }}.
-    </n-p> -->
+
+    <UploadModal v-model:show="showUploadModal" @add-row="addRow" />
   </div>
 </template>
 
 <script setup lang="ts">
 import { defineProps, computed, ref, h } from 'vue';
 import { NDataTable, NButton, NIcon } from 'naive-ui';
-// import { Star as StarIcon, StarFilled as StarFilledIcon } from '@vicons/carbon';
 import { Classification as FolderIcon } from '@vicons/carbon';
 import { DataTableColumns, DataTableRowKey } from 'naive-ui';
 import { format } from 'date-fns';
+import UploadModal from '@/components/common/UploadModal.vue';
+// import { Star as StarIcon, StarFilled as StarFilledIcon } from '@vicons/carbon';
 
 type RowData = {
   key: number;
@@ -46,6 +45,7 @@ const props = defineProps<{
   searchQuery: string;
 }>();
 
+const showUploadModal = ref(false);
 
 // Like 
 // const favorites = ref(new Set<number>());
@@ -59,8 +59,9 @@ const props = defineProps<{
 //   }
 // };
 
+
 const columns: DataTableColumns<RowData> = [
-  // {
+    // {
   //   title: '',
   //   key: 'none',
   //   width: 100,
@@ -109,11 +110,6 @@ const columns: DataTableColumns<RowData> = [
     key: 'bodyPart',
     sorter: (a: RowData, b: RowData) => a.bodyPart.localeCompare(b.bodyPart),
   },
-  // {
-  //   title: 'Study Date',
-  //   key: 'studyDate',
-  //   sorter: (a: RowData, b: RowData) => new Date(a.studyDate).getTime() - new Date(b.studyDate).getTime(),
-  // },
   {
     title: 'All Report',
     key: 'allReport',
@@ -145,7 +141,7 @@ const data = ref<RowData[]>(Array.from({ length: 20 }).map((_, index) => ({
   studyDate: format(new Date(), 'yyyy-MM-dd'),
   allReport: '',
   app: '',
-  favorite: false // 初始化 favorite 狀態
+  favorite: false
 })));
 
 const pagination = { pageSize: 10 };
@@ -159,24 +155,13 @@ const handleCheck = (rowKeys: DataTableRowKey[]) => {
 
 const filteredData = computed(() => {
   return data.value.filter((item) => {
+    if (!props.searchQuery) return true; // 如果 searchQuery 為空，顯示所有數據
     return item.fileName.includes(props.searchQuery) || item.patientId.includes(props.searchQuery);
   });
 });
 
-const addRow = () => {
-  const newIndex = data.value.length;
-  data.value.push({
-    key: newIndex,
-    fileName: `File_${newIndex}`,
-    patientId: `Demo_${newIndex + 1}`,
-    patientName: `Patient ${newIndex + 1}`,
-    studyDescription: `Description ${newIndex + 1}`,
-    modality: 'CR',
-    bodyPart: ['HAND', 'LSPONE', 'CHEST', 'HIP', 'EYE'][Math.floor(Math.random() * 5)],
-    studyDate: format(new Date(), 'yyyy-MM-dd'),
-    allReport: '',
-    app: '',
-    favorite: false
-  });
+const addRow = (newRow) => {
+  data.value.push(newRow);
+  showUploadModal.value = false;
 };
 </script>

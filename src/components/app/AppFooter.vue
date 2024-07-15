@@ -39,7 +39,7 @@
 
 .footerItem {
   font-size: 14px;
-  color:aqua
+  color: #18A058
 }
 
 .appVersion {
