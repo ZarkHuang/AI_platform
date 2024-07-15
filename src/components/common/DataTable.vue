@@ -19,7 +19,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, computed, ref, h } from 'vue';
+import { computed, ref, h } from 'vue';
 import { NDataTable, NButton, NIcon } from 'naive-ui';
 import { Classification as FolderIcon } from '@vicons/carbon';
 import { DataTableColumns, DataTableRowKey } from 'naive-ui';

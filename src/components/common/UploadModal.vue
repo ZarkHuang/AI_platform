@@ -51,12 +51,17 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, defineEmits } from 'vue';
-import { NModal, NSpace, NUpload, NButton, NForm, NFormItem, NInput, NSelect, NGrid, NGridItem } from 'naive-ui';
+import { ref, watch, defineEmits, defineProps } from 'vue';
+import { NModal, NSpace, NUpload, NButton, NForm, NFormItem, NInput, NSelect, NGrid, NGridItem , FormInst } from 'naive-ui';
 
 const emit = defineEmits(['add-row', 'update:show']);
+const props = defineProps<{ show: boolean }>();
 
-const showModal = ref(false);
+const showModal = ref(props.show);
+watch(() => props.show, (newVal) => {
+  showModal.value = newVal;
+});
+
 const fileList = ref([]);
 const modalityOptions = [
   { label: 'CR', value: 'CR' },
@@ -79,7 +84,7 @@ const form = ref({
   modality: modalityOptions[0].value,
   bodyPart: bodyPartOptions[0].value,
 });
-const formRef = ref(null);
+const formRef = ref<FormInst | null>(null);
 const rules = ref({
   fileName: [{ required: true, message: '請輸入 File Name' }],
   patientId: [{ required: true, message: '請輸入 Patient ID' }],
@@ -114,25 +119,29 @@ const handleCancel = () => {
 };
 
 const handleSubmit = () => {
-  formRef.value.validate((errors) => {
-    if (!errors) {
-      console.log('提交數據', form.value);
-      emit('add-row', {
-        ...form.value,
-        key: Date.now(),
-        studyDate: new Date().toISOString().split('T')[0], // 當前日期
-        allReport: '',
-        app: '',
-        favorite: false
-      });
-      emit('update:show', false);
-      resetForm();
-    }
-  });
+  if (formRef.value) {
+    formRef.value.validate((errors) => {
+      if (!errors) {
+        console.log('提交數據', form.value);
+        emit('add-row', {
+          ...form.value,
+          key: Date.now(),
+          studyDate: new Date().toISOString().split('T')[0], // 當前日期
+          allReport: '',
+          app: '',
+          favorite: false
+        });
+        emit('update:show', false);
+        resetForm();
+      }
+    });
+  }
 };
+
 
 // 當打開模態框時，重置表單
 watch(showModal, (newValue) => {
+  emit('update:show', newValue);
   if (newValue) {
     resetForm();
   }
